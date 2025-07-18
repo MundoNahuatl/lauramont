@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Video protegido</title>
+  <link rel="stylesheet" href="style.css"><!-- conserva tu CSS externo -->
+</head>
+<body>
+  <!-- LOGOS Y ENCABEZADOS (sin cambios) -->
+  <img src="logos/master.png" alt="Logo izquierdo" id="logo-izquierdo">
+  <img src="logos/master.png" alt="Logo derecho" id="logo-derecho">
+
+  <h1>BIENVENIDO A MUNDO NAHUAT</h1>
+  <h2>CLASE: NUMERACIÓN, FAMILIA, FRASES Y TIEMPO EN NÁHUAT</h2>  
+
+  <!-- BOTÓN WHATSAPP -->
+  <a href="https://wa.me/525573464771" target="_blank">
+    <button style="padding:10px 20px;background:#25D366;color:#fff;border:none;border-radius:5px;font-size:16px;cursor:pointer">
+      Enviar mensaje por WhatsApp
+    </button>
+  </a>
+
+  <!-- ───────────────── Pantalla de contraseña ───────────────── -->
+  <div id="password-container" style="margin-top:20px;">
+    <p>Introduce la contraseña para ver las clases:</p>
+    <input type="password" id="password" placeholder="Contraseña">
+    <button onclick="verificarContrasena()">ENTRAR</button>
+    <p id="mensaje" style="color:red;"></p>
+
+    <!-- Otros botones que ya tenías -->
+    <div style="margin-top:20px;">
+      <a href="https://www.facebook.com/nahuatlatoani" target="_blank">
+        <button style="padding:10px 20px;background:#4267B2;color:#fff;border:none;border-radius:5px;font-size:16px;cursor:pointer;margin-right:10px">
+          🌐 Visítanos en Facebook
+        </button>
+      </a>
+      <a href="https://mundonahuatl.github.io/MI-CATALOGO-TALLERES/" target="_blank">
+        <button style="padding:10px 20px;background:#7914b4;color:#fff;border:none;border-radius:5px;font-size:16px;cursor:pointer">
+          📚 Ver catálogo de cursos
+        </button>
+      </a>
+    </div>
+  </div>
+
+  <!-- ───────────────── Lista de clases ───────────────── -->
+  <div id="lista-clases" style="margin-top:20px;display:none;">
+    <h3>Selecciona la clase que deseas ver</h3>
+    <div id="botones-clases"></div>
+  </div>
+
+  <!-- ───────────────── Reproductor de video ───────────────── -->
+  <div id="video-container" style="display:none;margin-top:20px;">
+    <iframe id="video-frame" src="" width="960" height="540" frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
+    </iframe>
+    <p id="mensaje-fechas" style="margin-top:20px;font-weight:bold;"></p>
+
+    <!-- Botón regresar -->
+    <button onclick="mostrarLista()" style="padding:10px 20px;background:#4caf50;color:#fff;border:none;border-radius:5px;font-size:16px;cursor:pointer;margin-top:10px">
+      Regresar a la lista
+    </button>
+  </div>
+
+<script>
+  /* --- CONFIGURACIÓN --- */
+  const CONTRASENA_CORRECTA = "claseuno";
+
+  /*  Lista de clases: añade tantas como quieras  */
+  const CLASES = [
+    {
+      titulo: "Clase 1: Introducción pur pinchi clase perrona ",
+      url: "https://player.vimeo.com/video/1089389449?h=c71f617420",
+      inicio: "2025-07-09",
+      fin:    "2025-07-15"
+    },
+    {
+      titulo: "Clase 2: Desarrollo mas clases perronas aqui",
+      url: "https://player.vimeo.com/video/1097353273?h=06cd0d8fb1",
+      inicio: "2025-07-12",
+      fin:    "2025-07-17"
+    },
+     {
+      titulo: "Clase 3: Final la mera verduar del caldo",
+      url: "https://player.vimeo.com/video/1097353273?h=06cd0d8fb1",
+      inicio: "2025-07-12",
+      fin:    "2025-07-14"
+    }
+   
+  ];
+
+  /* --- UTILIDADES --- */
+  const hoyISO = () => new Date().toISOString().split("T")[0];
+  const disponible = (c) => hoyISO() >= c.inicio && hoyISO() <= c.fin;
+
+  /* --- Pantalla de contraseña --- */
+  function verificarContrasena() {
+    const pwd = document.getElementById("password").value;
+    if (pwd === CONTRASENA_CORRECTA) {
+      document.getElementById("mensaje").textContent = "";
+      document.getElementById("password-container").style.display = "none";
+      mostrarLista();
+    } else {
+      document.getElementById("mensaje").textContent = "Contraseña incorrecta";
+    }
+  }
+
+  /* --- Genera y muestra la lista --- */
+  function mostrarLista() {
+    document.getElementById("video-container").style.display = "none";
+    const cont = document.getElementById("botones-clases");
+    cont.innerHTML = "";                        // Limpia la lista
+
+    CLASES.forEach((c, i) => {
+      const b = document.createElement("button");
+      b.textContent = c.titulo;
+      Object.assign(b.style, {
+        padding:"10px 20px", margin:"10px",
+        background:"#4caf50", color:"#fff",
+        border:"none", borderRadius:"5px",
+        fontSize:"16px", cursor:"pointer"
+      });
+      b.onclick = () => cargarClase(i);
+      cont.appendChild(b);
+    });
+
+    document.getElementById("lista-clases").style.display = "block";
+  }
+
+  /* --- Reproduce o bloquea la clase elegida --- */
+  function cargarClase(i) {
+    const clase = CLASES[i];
+    const msg   = document.getElementById("mensaje-fechas");
+    document.getElementById("lista-clases").style.display = "none";
+    document.getElementById("video-container").style.display = "block";
+
+    if (disponible(clase)) {
+      document.getElementById("video-frame").src = clase.url;
+      msg.style.color = "green";
+      msg.textContent = "Disponible hasta: " + clase.fin;
+    } else {
+      document.getElementById("video-frame").src = "";
+      msg.style.color = "red";
+      msg.textContent = hoyISO() < clase.inicio
+        ? "⏳ Aún no disponible. Inicia el " + clase.inicio
+        : "⛔ Vigencia finalizada el " + clase.fin;
+    }
+  }
+
+  /* --- Atajo Enter en el campo de contraseña & bloqueo clic-dcho --- */
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("password").addEventListener("keyup", e => {
+      if (e.key === "Enter") verificarContrasena();
+    });
+    document.addEventListener("contextmenu", e => e.preventDefault());
+  });
+</script>
+</body>
+</html>
+
+

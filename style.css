@@ -1,0 +1,104 @@
+/* Estilos generales del cuerpo */
+body {
+  margin: 0;
+  padding: 0 10px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #87eb9e;
+}
+
+/* Contenedor de videos */
+.video-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Video HTML5 */
+video {
+  max-width: 1080px;
+  width: 100%;
+  border: 2px solid #333;
+  border-radius: 8px;
+}
+
+/* iFrame (YouTube, Vimeo) */
+iframe {
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+/* Logos en escritorio */
+#logo-izquierdo,
+#logo-derecho {
+  position: fixed;
+  top: 10px;
+  width: 150px;
+  z-index: 9999;
+}
+
+#logo-izquierdo {
+  left: 10px;
+}
+
+#logo-derecho {
+  right: 10px;
+}
+
+/* Botón CONTINUAR */
+.btn-continuar {
+  padding: 20px 40px;
+  font-size: 24px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-continuar:hover {
+  background-color: #333333;
+  transform: scale(1.05);
+}
+
+/* Contenedor centrado del formulario */
+#formulario-container {
+  text-align: center;
+}
+
+/* RESPONSIVE para pantallas pequeñas */
+@media (max-width: 600px) {
+  h1, h2, h3 {
+    font-size: 1.5rem;
+  }
+
+  .btn-continuar {
+    font-size: 18px;
+    padding: 16px 24px;
+    width: 90%;
+  }
+
+  /* Centrado horizontal de los logos */
+  .logos-superiores {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  #logo-izquierdo,
+  #logo-derecho {
+    position: static;
+    display: inline-block;
+    width: 60px;
+    margin: 0 8px;
+  }
+}
